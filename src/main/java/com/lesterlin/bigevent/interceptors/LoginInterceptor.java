@@ -1,6 +1,5 @@
 package com.lesterlin.bigevent.interceptors;
 
-import com.lesterlin.bigevent.pojo.Result;
 import com.lesterlin.bigevent.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
