@@ -9,6 +9,7 @@ import com.lesterlin.bigevent.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,6 +80,41 @@ public class UserController {
     @PatchMapping("/updateAvatar")
     public Result updateAvatar(@RequestParam @URL String avatarUrl){
         userService.updateAvatar(avatarUrl);
+        return Result.success();
+    }
+
+    @PatchMapping("/updatePwd")
+    public Result updatePwd(@RequestBody Map<String,String> params){
+        // 1. 校驗參數
+        String oldPwd = params.get("old_pwd");
+        String newPwd = params.get("new_pwd");
+        String rePwd = params.get("re_pwd");
+
+        if(!StringUtils.hasLength(oldPwd)||!StringUtils.hasLength(newPwd)||!StringUtils.hasLength(rePwd)){
+            return Result.error("缺少必要的參數");
+        }
+
+        // 校驗原密碼是否正確
+        // 調用userService根據用戶名拿到原密碼，再和oldPwd比對
+        Map<String,Object> map = ThreadLocalUtil.get();
+        String username = (String) map.get("username");
+        User loginUser = userService.findByUserName(username);
+        if(!loginUser.getPassword().equals(Md5Util.getMD5String(oldPwd))){
+            return Result.error("原密碼錯誤");
+        }
+
+        // 校驗newPwd不能和oldPwd一樣*
+        if(oldPwd.equals(newPwd)){
+            return Result.error("原密碼不得和新密碼相同");
+        }
+
+        // 校驗newPwd和rePwd是否一樣
+        if(!rePwd.equals(newPwd)){
+            return Result.error("兩次填寫的新密碼不同");
+        }
+
+        // 2. 調用userService完成密碼更新
+        userService.updatePwd(newPwd);
         return Result.success();
     }
 }
