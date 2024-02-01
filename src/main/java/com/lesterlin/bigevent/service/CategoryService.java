@@ -13,4 +13,6 @@ public interface CategoryService {
     Category findById(Integer id);
     // 更新分類
     void update(Category category);
+    // 刪除文章分類
+    void deleteById(Integer id);
 }

@@ -1,10 +1,7 @@
 package com.lesterlin.bigevent.mapper;
 
 import com.lesterlin.bigevent.pojo.Category;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -23,4 +20,7 @@ public interface CategoryMapper {
     // 更新分類
     @Update("update category set category_name=#{categoryName},category_alias=#{categoryAlias},update_time=#{updateTime} where id=#{id}")
     void update(Category category);
+    // 刪除文章分類
+    @Delete("delete from category where id=#{id}")
+    void deleteById(Integer id);
 }
