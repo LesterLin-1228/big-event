@@ -9,4 +9,6 @@ public interface CategoryService {
     void add(Category category);
     // 列表查詢
     List<Category> list();
+    // 根據id查詢分類訊息
+    Category findById(Integer id);
 }
