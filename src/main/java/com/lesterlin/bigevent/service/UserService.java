@@ -7,4 +7,6 @@ public interface UserService {
     User findByUserName(String username);
     // 註冊
     void register(String username, String password);
+    // 更新
+    void update(User user);
 }
