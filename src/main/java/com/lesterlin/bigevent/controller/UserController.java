@@ -5,6 +5,7 @@ import com.lesterlin.bigevent.pojo.User;
 import com.lesterlin.bigevent.service.UserService;
 import com.lesterlin.bigevent.utils.JwtUtil;
 import com.lesterlin.bigevent.utils.Md5Util;
+import com.lesterlin.bigevent.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -58,11 +59,12 @@ public class UserController {
     }
 
     @GetMapping("/userInfo")
-    public Result<User> userInfo(@RequestHeader(name = "Authorization") String token){
+    public Result<User> userInfo(/*@RequestHeader(name = "Authorization") String token*/){
         // 根據用戶名查詢用戶
-        Map<String, Object> map = JwtUtil.parseToken(token);
+//        Map<String, Object> map = JwtUtil.parseToken(token);
+//        String username = (String) map.get("username");
+        Map<String,Object> map = ThreadLocalUtil.get();
         String username = (String) map.get("username");
-
         User user = userService.findByUserName(username);
         return Result.success(user);
     }
