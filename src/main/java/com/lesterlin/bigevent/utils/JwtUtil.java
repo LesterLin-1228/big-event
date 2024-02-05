@@ -9,16 +9,16 @@ import java.util.Map;
 public class JwtUtil {
 
     private static final String KEY = "lesterlin";
-	
-	//接收業務數據,生成token並返回
+
+    //接收業務數據,生成token並返回
     public static String genToken(Map<String, Object> claims) {
         return JWT.create()
                 .withClaim("claims", claims)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .sign(Algorithm.HMAC256(KEY));
     }
 
-	//接收token,驗證token,並返回業務數據
+    //接收token,驗證token,並返回業務數據
     public static Map<String, Object> parseToken(String token) {
         return JWT.require(Algorithm.HMAC256(KEY))
                 .build()

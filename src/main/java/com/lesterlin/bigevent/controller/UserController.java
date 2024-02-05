@@ -9,12 +9,15 @@ import com.lesterlin.bigevent.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -23,6 +26,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @PostMapping("/register")
     public Result<String> register(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
@@ -41,80 +46,87 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password){
+    public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
         // 根據用戶名查詢用戶
         User loginUser = userService.findByUserName(username);
         // 判斷用戶是否存在
-        if(loginUser==null){
+        if (loginUser == null) {
             return Result.error("用戶名錯誤");
         }
         // 判斷密碼是否正確 login對象中的password是密文
-        if(Md5Util.getMD5String(password).equals(loginUser.getPassword())){
+        if (Md5Util.getMD5String(password).equals(loginUser.getPassword())) {
             // 登錄成功
-            Map<String,Object> claims = new HashMap<>();
-            claims.put("id",loginUser.getId());
-            claims.put("username",loginUser.getUsername());
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", loginUser.getId());
+            claims.put("username", loginUser.getUsername());
             String token = JwtUtil.genToken(claims);
+            // 把token儲存到redis中
+            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+            operations.set(token, token, 1, TimeUnit.HOURS);
             return Result.success(token);
         }
         return Result.error("密碼錯誤");
     }
 
     @GetMapping("/userInfo")
-    public Result<User> userInfo(/*@RequestHeader(name = "Authorization") String token*/){
+    public Result<User> userInfo(/*@RequestHeader(name = "Authorization") String token*/) {
         // 根據用戶名查詢用戶
 //        Map<String, Object> map = JwtUtil.parseToken(token);
 //        String username = (String) map.get("username");
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         String username = (String) map.get("username");
         User user = userService.findByUserName(username);
         return Result.success(user);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody @Validated User user){
+    public Result update(@RequestBody @Validated User user) {
         userService.update(user);
         return Result.success();
     }
 
     @PatchMapping("/updateAvatar")
-    public Result updateAvatar(@RequestParam @URL String avatarUrl){
+    public Result updateAvatar(@RequestParam @URL String avatarUrl) {
         userService.updateAvatar(avatarUrl);
         return Result.success();
     }
 
     @PatchMapping("/updatePwd")
-    public Result updatePwd(@RequestBody Map<String,String> params){
+    public Result updatePwd(@RequestBody Map<String, String> params, @RequestHeader("Authorization") String token) {
         // 1. 校驗參數
         String oldPwd = params.get("old_pwd");
         String newPwd = params.get("new_pwd");
         String rePwd = params.get("re_pwd");
 
-        if(!StringUtils.hasLength(oldPwd)||!StringUtils.hasLength(newPwd)||!StringUtils.hasLength(rePwd)){
+        if (!StringUtils.hasLength(oldPwd) || !StringUtils.hasLength(newPwd) || !StringUtils.hasLength(rePwd)) {
             return Result.error("缺少必要的參數");
         }
 
         // 校驗原密碼是否正確
         // 調用userService根據用戶名拿到原密碼，再和oldPwd比對
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         String username = (String) map.get("username");
         User loginUser = userService.findByUserName(username);
-        if(!loginUser.getPassword().equals(Md5Util.getMD5String(oldPwd))){
+        if (!loginUser.getPassword().equals(Md5Util.getMD5String(oldPwd))) {
             return Result.error("原密碼錯誤");
         }
 
         // 校驗newPwd不能和oldPwd一樣*
-        if(oldPwd.equals(newPwd)){
+        if (oldPwd.equals(newPwd)) {
             return Result.error("原密碼不得和新密碼相同");
         }
 
         // 校驗newPwd和rePwd是否一樣
-        if(!rePwd.equals(newPwd)){
+        if (!rePwd.equals(newPwd)) {
             return Result.error("兩次填寫的新密碼不同");
         }
 
         // 2. 調用userService完成密碼更新
         userService.updatePwd(newPwd);
+        // 刪除redis中對應的token
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+        operations.getOperations().delete(token);
+
         return Result.success();
     }
 }
