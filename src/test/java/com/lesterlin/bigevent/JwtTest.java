@@ -29,9 +29,7 @@ public class JwtTest {
     @Test
     public void testParse(){
         // 定義字符串，模擬用戶傳遞過來的token
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-                ".eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6Ikxlc3RlciJ9LCJleHAiOjE3MDY3NTUzNjZ9" +
-                ".wdUK8tdMbHRo-4Y37hDkCSfeqoe888auIyw9-nDK21g";
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6Ikxlc3RlciJ9LCJleHAiOjE3MDc0NDczNzV9.WTSua0t-x1DlEABQ0ZUoFDtvIrcf2p3Qss7oFNazu6k";
 
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256("lesterlin")).build();
 

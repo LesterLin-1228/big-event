@@ -113,7 +113,7 @@ public class UserController {
 
         // 校驗newPwd不能和oldPwd一樣*
         if (oldPwd.equals(newPwd)) {
-            return Result.error("原密碼不得和新密碼相同");
+            return Result.error("新密碼不得和原密碼相同");
         }
 
         // 校驗newPwd和rePwd是否一樣
