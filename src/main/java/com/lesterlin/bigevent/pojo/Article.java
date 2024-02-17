@@ -17,7 +17,7 @@ public class Article {
     @NotNull(groups = Article.Update.class)
     private Integer id; //主鍵ID
     @NotEmpty
-    @Pattern(regexp = "^\\S{1,10}$")
+    @Pattern(regexp = "^\\S{1,20}$")
     private String title; //文章標題
     @NotEmpty
     private String content; //文章内容
