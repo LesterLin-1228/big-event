@@ -5,7 +5,11 @@ import com.lesterlin.bigevent.pojo.User;
 import com.lesterlin.bigevent.service.UserService;
 import com.lesterlin.bigevent.utils.Md5Util;
 import com.lesterlin.bigevent.utils.ThreadLocalUtil;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,8 +17,13 @@ import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Override
     public User findByUserName(String username) {
         User u = userMapper.findByUserName(username);
@@ -26,7 +35,7 @@ public class UserServiceImpl implements UserService {
         // 加密
         String md5String = Md5Util.getMD5String(password);
         // 添加
-        userMapper.add(username,md5String);
+        userMapper.add(username, md5String);
     }
 
     @Override
@@ -37,15 +46,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateAvatar(String avatarUrl) {
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
-        userMapper.updateAvatar(avatarUrl,id);
+        userMapper.updateAvatar(avatarUrl, id);
     }
 
     @Override
     public void updatePwd(String newPwd) {
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
-        userMapper.updatePwd(Md5Util.getMD5String(newPwd),id);
+        userMapper.updatePwd(Md5Util.getMD5String(newPwd), id);
+    }
+
+    @Override
+    public void sendPwdResetMail(String email) throws MessagingException {
+
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setFrom("big-event<newa5812763@gmail.com>");
+            helper.setTo(email);
+            helper.setSubject("忘記密碼");
+            helper.setText("<html><body><a href=\"http://localhost:5173/user/resetPassword\">重新設定密碼</a></body></html>", true);
+            javaMailSender.send(mimeMessage);
+
     }
 }

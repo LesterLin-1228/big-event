@@ -12,6 +12,19 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 1000MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: newa5812763@gmail.com
+    password: ewxk nqmp qelr ugqn
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 mybatis:
   configuration:

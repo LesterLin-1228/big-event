@@ -129,4 +129,22 @@ public class UserController {
 
         return Result.success();
     }
+
+    // 發送忘記密碼信件
+    @PostMapping("/sendResetPwdMail")
+    public Result sendResetPwdMail(String email,String username) throws Exception {
+        // 根據用戶名查詢用戶
+        User user = userService.findByUserName(username);
+        // 判斷用戶是否存在
+        if (user == null) {
+            return Result.error("用戶名錯誤");
+        }
+        // 判斷信箱是否符合
+        if(email.equals(user.getEmail())){
+            userService.sendPwdResetMail(user.getEmail());
+            return Result.success("已發送重設密碼的連結到您的信箱");
+        }
+
+        return Result.error("信箱不符");
+    }
 }
