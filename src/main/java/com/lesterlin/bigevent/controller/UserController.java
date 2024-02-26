@@ -62,7 +62,7 @@ public class UserController {
             String token = JwtUtil.genToken(claims);
             // 把token儲存到redis中
             ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-            operations.set(token, token, 1, TimeUnit.HOURS);
+            operations.set(token, token, 3, TimeUnit.HOURS);
             return Result.success(token);
         }
         return Result.error("密碼錯誤");
@@ -131,20 +131,61 @@ public class UserController {
     }
 
     // 發送忘記密碼信件
-    @PostMapping("/sendResetPwdMail")
-    public Result sendResetPwdMail(String email,String username) throws Exception {
+    @PostMapping("/sendMail")
+    public Result sendMail(String email, String username) throws Exception {
         // 根據用戶名查詢用戶
-        User user = userService.findByUserName(username);
+        User userResetPwd = userService.findByUserName(username);
         // 判斷用戶是否存在
-        if (user == null) {
+        if (userResetPwd == null) {
             return Result.error("用戶名錯誤");
         }
         // 判斷信箱是否符合
-        if(email.equals(user.getEmail())){
-            userService.sendPwdResetMail(user.getEmail());
-            return Result.success("已發送重設密碼的連結到您的信箱");
+        if (email.equals(userResetPwd.getEmail())) {
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", userResetPwd.getId());
+            claims.put("username", userResetPwd.getUsername());
+            // 生成安全令牌
+            String token = JwtUtil.genToken(claims);
+            // 把token儲存到redis中
+            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+            operations.set(token, token, 1, TimeUnit.HOURS);
+            // 發信
+            userService.sendMail(userResetPwd.getEmail(), token);
+            return Result.success(token);
         }
-
         return Result.error("信箱不符");
+    }
+
+    // 忘記密碼重設
+    @PatchMapping("/resetPwd")
+    public Result<String> resetPwd(@RequestHeader("Authorization") String token, @RequestBody Map<String, String> params) {
+        // 從redis中獲取相同的token
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+        String redisToken = operations.get(token);
+        if(redisToken==null){
+            // token已失效
+            throw new RuntimeException();
+        }
+        // 解析安全令牌，提取用戶名
+        Map<String, Object> claims = JwtUtil.parseToken(token);
+        ThreadLocalUtil.set(claims);
+        String username = (String) claims.get("username");
+        // 根據用戶名查找用戶
+        User user = userService.findByUserName(username);
+        if (user == null) {
+            return Result.error("用戶不存在");
+        }
+        // 檢查新密碼與確認新密碼是否一致
+        String newPwd = params.get("new_pwd");
+        String reNewPwd = params.get("re_pwd");
+        if (!newPwd.equals(reNewPwd)) {
+            return Result.error("新密碼與確認新密碼不一致");
+        }
+        //調用userService完成密碼更新
+        userService.updatePwd(newPwd);
+        // 刪除redis中對應的token
+        operations.getOperations().delete(token);
+        ThreadLocalUtil.remove();
+        return Result.success("密碼已重新設定");
     }
 }

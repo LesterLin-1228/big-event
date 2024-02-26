@@ -15,5 +15,5 @@ public interface UserService {
     // 更新密碼
     void updatePwd(String newPwd);
     // 忘記密碼送出郵件
-    void sendPwdResetMail(String email) throws MessagingException;
+    void sendMail(String email, String token) throws MessagingException;
 }

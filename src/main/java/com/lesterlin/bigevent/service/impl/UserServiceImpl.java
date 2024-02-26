@@ -59,15 +59,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendPwdResetMail(String email) throws MessagingException {
-
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom("big-event<newa5812763@gmail.com>");
-            helper.setTo(email);
-            helper.setSubject("忘記密碼");
-            helper.setText("<html><body><a href=\"http://localhost:5173/user/resetPassword\">重新設定密碼</a></body></html>", true);
-            javaMailSender.send(mimeMessage);
-
+    public void sendMail(String email, String token) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setFrom("big-event<newa5812763@gmail.com>");
+        helper.setTo(email);
+        helper.setSubject("忘記密碼");
+        helper.setText("<html><body><a href=\"http://localhost:5173/forgotPwd?token=" + token + "\">重新設定密碼</a></body></html>", true);
+        javaMailSender.send(mimeMessage);
     }
 }
