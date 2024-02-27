@@ -25,7 +25,13 @@ spring:
           auth: true
           starttls:
             enable: true
-
+springdoc:
+  api-docs:
+    enabled: true # 預設的
+    path: /api-docs # API 文件的路徑，預設的
+  swagger-ui:
+    enabled: true # 預設的
+    path: /swagger-ui.html # Swagger UI 界面的路徑，預設的
 mybatis:
   configuration:
     map-underscore-to-camel-case: true #開啟駝峰式命名和底線命名自動轉換
