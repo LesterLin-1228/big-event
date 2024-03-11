@@ -20,7 +20,7 @@
 - 後端：Java、Spring Boot
 - 數據庫：MySQL、Redis
 - 驗證：JWT (JSON Web Tokens)
-- 雲服務：Alibaba cloud OSS (用於圖片儲存)
+- 雲服務：Amazon S3 (用於圖片儲存)
 - RESTfull API (SpringDoc)
 - Axios
 
