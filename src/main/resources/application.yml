@@ -25,6 +25,7 @@ spring:
           auth: true
           starttls:
             enable: true
+
 springdoc:
   api-docs:
     enabled: true # 預設的
@@ -32,6 +33,16 @@ springdoc:
   swagger-ui:
     enabled: true # 預設的
     path: /swagger-ui.html # Swagger UI 界面的路徑，預設的
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true #開啟駝峰式命名和底線命名自動轉換
+
+aws:
+  accessKey: AKIAW3MD7UVKDI3A4MMH
+  secretKey: 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
+  region: ap-northeast-1
+  s3:
+    bucketName: big-event-test
+
+

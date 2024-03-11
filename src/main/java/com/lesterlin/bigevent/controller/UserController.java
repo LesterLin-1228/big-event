@@ -42,7 +42,6 @@ public class UserController {
             // 占用
             return Result.error("用戶名已被占用");
         }
-
     }
 
     @PostMapping("/login")
