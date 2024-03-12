@@ -5,14 +5,14 @@
 
 ## 功能特性
 
-- 使用者註冊與登入系統 ![RegisterAndLogin](./src/main/resources/static/RegisterAndLogin.gif)
-- 忘記密碼發信重設功能
-- 文章分類的創建、編輯和刪除
-- 文章的創建、編輯和刪除 (可依分類或發布狀態搜尋且可選每頁要顯示幾條項目)
-- 個人基本資料修改
-- 更換頭像功能 (單文件最大100MB)
-- 重置密碼功能
-- 表單參數校驗
+- 使用者註冊與登入系統 ![RegisterAndLogin](./src/main/resources/static/registerAndLogin.gif)
+- 忘記密碼發信重設功能 ![ForgetPwd](./src/main/resources/static/forgetPwd.gif)
+- 文章分類的創建、編輯和刪除 ![CategoryCRUD](./src/main/resources/static/categoryCRUD.gif)
+- 文章的創建、編輯和刪除 (可依分類或發布狀態搜尋且可選每頁要顯示幾條項目) ![ArticleCRUD](./src/main/resources/static/articleCRUD.gif)
+- 個人基本資料修改 ![UserInfoUpdate](./src/main/resources/static/userInfoUpdate.gif)
+- 更換頭像功能 ![AvatarUpdate](./src/main/resources/static/avatarUpdate.gif)
+- 重置密碼功能 ![PasswordUpdate](./src/main/resources/static/passwordUpdate.gif)
+- 登出並跳轉登入畫面 ![Logout](./src/main/resources/static/logout.gif)
 
 ## 技術棧
 
@@ -38,7 +38,7 @@
 - MySQL (內嵌於IDEA)
 - Redis
 
-#### 1. 克隆此倉庫
+#### 1. 克隆
    
 - 前端
 ```bash
