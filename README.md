@@ -16,7 +16,7 @@
 
 ## 技術棧
 
-- 前端：Vue.js (Template : Element-Plus)
+- 前端：Vue.js (Composition API)、pinia、vite、Element-Plus
 - 後端：Java、Spring Boot
 - 數據庫：MySQL、Redis
 - 驗證：JWT (JSON Web Tokens)
