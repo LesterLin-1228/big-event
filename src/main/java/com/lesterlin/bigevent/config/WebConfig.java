@@ -15,6 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 登入接口和註冊接口不攔截
-        registry.addInterceptor(loginInterceptor).excludePathPatterns("/user/login", "/user/register", "/user/sendMail", "/user/resetPwd", "/swagger-ui/**", "/api-docs/**");
+        registry.addInterceptor(loginInterceptor).excludePathPatterns("/user/login", "/user/register", "/user/sendMail", "/user/resetPwd","/swagger-ui.html", "/swagger-ui/**", "/api-docs/**");
     }
 }

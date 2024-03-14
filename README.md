@@ -21,7 +21,8 @@
 - 數據庫：MySQL、Redis
 - 驗證：JWT (JSON Web Tokens)
 - 雲服務：Amazon S3 (用於圖片儲存)
-- RESTfull API (SpringDoc)
+- RESTfull API ([API Doc](https://app.swaggerhub.com/apis-docs/NEWA5812763/BigEvent/1.0.0)
+  )
 - Axios
 
 ## 安裝指南
