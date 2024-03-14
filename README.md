@@ -16,8 +16,8 @@
 
 ## 技術棧
 
-- 前端：Vue.js (Composition API)、pinia、vite、Element-Plus
-- 後端：Java、Spring Boot
+- 前端：Vue3 (Composition API)、pinia、vite、Element-Plus
+- 後端：Java17、Spring Boot3
 - 數據庫：MySQL、Redis
 - 驗證：JWT (JSON Web Tokens)
 - 雲服務：Amazon S3 (用於圖片儲存)
