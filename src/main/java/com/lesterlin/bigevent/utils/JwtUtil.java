@@ -26,5 +26,4 @@ public class JwtUtil {
                 .getClaim("claims")
                 .asMap();
     }
-
 }
