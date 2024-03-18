@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/big_event
+    username: root
+    password: springboot
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: newa5812763@gmail.com
+    password: ewxk nqmp qelr ugqn
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+springdoc:
+  api-docs:
+    enabled: true # 預設的
+    path: /api-docs # API 文件的路徑，預設的
+  swagger-ui:
+    enabled: true # 預設的
+    path: /swagger-ui.html # Swagger UI 界面的路徑，預設的
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true #開啟駝峰式命名和底線命名自動轉換
+
+aws:
+  accessKey: AKIAW3MD7UVKDI3A4MMH
+  secretKey: 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
+  region: ap-northeast-1
+  s3:
+    bucketName: big-event-test
+
+
