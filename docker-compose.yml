@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  backend:
+    image: lesterlinouo/big-event:v1.0.0
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    networks:
+      - mynetwork
+
+  frontend:
+    image: lesterlinouo/big-event-vue:v1.0.0
+    ports:
+      - "80:80"
+    volumes:
+      - C:\Users\user\Desktop\heima\big-event-vue:/app
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
