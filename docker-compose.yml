@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   backend:
-    image: lesterlinouo/big-event:v1.0.0
+    image: lesterlinouo/big-event:backend-v1.0.0
     ports:
       - "8080:8080"
     volumes:
@@ -13,7 +13,7 @@ services:
       - redis
 
   frontend:
-    image: lesterlinouo/big-event-vue:v1.0.0
+    image: lesterlinouo/big-event:frontend-v1.0.0
     ports:
       - "80:80"
     volumes:
@@ -22,7 +22,7 @@ services:
       - mynetwork
 
   redis:
-    image: redis
+    image: lesterlinouo/big-event:redis
     ports:
       - "6379:6379"
     networks:

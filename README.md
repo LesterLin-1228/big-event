@@ -16,54 +16,37 @@
 
 ## 技術棧
 
-- 前端：Vue3 (Composition API)、pinia、vite、Element-Plus
-- 後端：Java17、Spring Boot3
-- 數據庫：MySQL、Redis
-- 驗證：JWT (JSON Web Tokens)
-- 雲服務：Amazon S3 (用於圖片儲存)
+- 前端：使用 Vue3 的 Composition API、pinia 狀態管理庫、vite 快速開發工具和 Element-Plus UI 框架，以及 Axios 用於發送 HTTP 請求
+- 後端：使用 Java17 和 Spring Boot3 作為後端開發框架
+- 數據庫：使用 MySQL 和 Redis 作為數據庫系統
+- 驗證：使用 JWT (JSON Web Tokens) 來實現身份驗證
+- 雲服務：使用 Amazon S3 作為圖片儲存服務
 - RESTfull API ([API Doc](https://app.swaggerhub.com/apis-docs/NEWA5812763/BigEvent/1.0.0)
   )
-- Axios
+- Docker & Docker Compose ([Docker Hub](https://hub.docker.com/repository/docker/lesterlinouo/big-event/general))
 
 ## 安裝指南
 
-### 開發環境  
-1. 前端
-- Visual Studio
-- Node.js
-- Vue3
-2. 後端
-- IntelliJ IDEA
-- Java17
-- Spring Boot3
-- MySQL (內嵌於IDEA)
-- Redis
-
-#### 1. 克隆
+### Docker 部署
    
-- 前端
-```bash
-git clone https://github.com/Lester-1228/big-event-vue.git
-```
+#### 1. 安裝Docker Desktop
 
-- 後端
+- clone
 ```bash
 git clone https://github.com/Lester-1228/big-event.git
 ```
-
-#### 2. 安裝依賴
-
+- cd
 ```bash
-npm install
+cd big-event
+```
+- 啟動 Docker 容器
+```bash
+docker-compose up
 ```
 
-#### 3. 啟動前端應用
-
-```bash
-npm run dev
-```
-
-訪問 http://localhost:5173 查看應用。
-#### 可以直接註冊或使用以下用戶名及密碼測試專案
+#### 2. 訪問 http://localhost 查看應用。
+可以直接註冊或使用以下用戶名及密碼測試專案  
 用戶名 : Lester  
 密碼 : 123456
+
+#### 聯繫我 : newa5812763@gmail.com
