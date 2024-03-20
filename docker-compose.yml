@@ -9,6 +9,8 @@ services:
       - ./:/app
     networks:
       - mynetwork
+    depends_on:
+      - redis
 
   frontend:
     image: lesterlinouo/big-event-vue:v1.0.0
@@ -16,6 +18,13 @@ services:
       - "80:80"
     volumes:
       - C:\Users\user\Desktop\heima\big-event-vue:/app
+    networks:
+      - mynetwork
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
     networks:
       - mynetwork
 
