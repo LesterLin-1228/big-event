@@ -39,8 +39,6 @@ mybatis:
     map-underscore-to-camel-case: true #開啟駝峰式命名和底線命名自動轉換
 
 aws:
-  accessKey: AKIAW3MD7UVKDI3A4MMH
-  secretKey: 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
   region: ap-northeast-1
   s3:
     bucketName: big-event-test
