@@ -44,8 +44,8 @@ docker-compose up
 ```
 
 #### 2. Visit http://localhost to view the application
-You can directly register or use the following username and password to test the project
-Username: Lester
+You can directly register or use the following username and password to test the project  
+Username: Lester  
 Password: 123456
 
 #### Contact me: newa5812763@gmail.com
