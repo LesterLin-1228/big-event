@@ -8,7 +8,6 @@ public class StateValidation implements ConstraintValidator<State,String> {
     /**
      *
      * @param value 將來要校驗的數據
-     * @param context
      * @return 如果返回的是false則校驗不通過，若true則通過
      */
     @Override
@@ -17,9 +16,6 @@ public class StateValidation implements ConstraintValidator<State,String> {
         if(value==null){
             return false;
         }
-        if(value.equals("已發布")||value.equals("草稿")){
-            return true;
-        }
-        return false;
+        return value.equals("已發布") || value.equals("草稿");
     }
 }
